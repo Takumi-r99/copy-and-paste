@@ -1,0 +1,33 @@
+import xlrd
+import openpyxl
+
+
+
+def get_list_2d(sheet, start_row, end_row, start_col, end_col):
+    return [sheet.row_values(row, start_col, end_col + 1) for row in range(start_row, end_row + 1)]
+
+def write_list_2d(sheet, l_2d, start_row, start_col):
+    for y, row in enumerate(l_2d):
+        for x, cell in enumerate(row):
+            sheet.cell(row=start_row + y,
+                       column=start_col + x,
+                       value=l_2d[y][x])
+
+wb_write = openpyxl.load_workbook('/Volumes/USB DISK/1101実験結果/Re12_1101.xlsx')
+
+for i in range(35,45):
+    wb = xlrd.open_workbook(f'/Volumes/USB DISK/reslut 11.01/Re 13 C/{str(i)}.xls')
+    sheet = wb.sheet_by_name('Sheet1')
+
+
+    l_2d = get_list_2d(sheet, 1, 2000, 7, 8)
+    l2_2d = get_list_2d(sheet, 1, 2000, 9, 10)
+    
+    sheet_write = wb_write[str(i-35)+'.0']
+    write_list_2d(sheet_write, l_2d, 9, 1)
+    write_list_2d(sheet_write, l2_2d, 9, 3)
+
+wb_write.save('/Volumes/USB DISK/1101実験結果/Re13_1101.xlsx')
+
+
+   
